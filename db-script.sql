@@ -4,7 +4,6 @@ CREATE TABLE USERS (
                        id BIGINT PRIMARY KEY,
                        username VARCHAR(100) UNIQUE NOT NULL,
                        password_hash VARCHAR(255) NOT NULL ,
-                       transfer_code BIGINT UNIQUE NOT NULL,
                        email VARCHAR(255) UNIQUE NOT NULL,
                        first_name VARCHAR(50),
                        last_name VARCHAR(50),
@@ -33,6 +32,7 @@ CREATE TABLE ACCOUNT (
                          user_id BIGINT,
                          balance BIGINT DEFAULT 0,
                          account_type NVARCHAR CHECK (account_type in ('TR', 'USD', 'EURO')),
+                         transfer_code BIGINT UNIQUE NOT NULL,
                          FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE,
 );
 
