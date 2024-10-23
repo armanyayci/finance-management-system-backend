@@ -7,7 +7,7 @@ CREATE TABLE USERS (
                        email VARCHAR(255) UNIQUE NOT NULL,
                        first_name VARCHAR(50),
                        last_name VARCHAR(50),
-                       status NVARCHAR CHECK (status in ('ACTIVE', 'INACTIVE', 'SUSPENDED')) DEFAULT 'ACTIVE',
+                       status INT CHECK (status in (0,1,2)) DEFAULT 0,
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                        updated_at datetime DEFAULT GETDATE()
 );
@@ -31,7 +31,7 @@ CREATE TABLE ACCOUNT (
                          id BIGINT PRIMARY KEY,
                          user_id BIGINT,
                          balance BIGINT DEFAULT 0,
-                         account_type NVARCHAR CHECK (account_type in ('TR', 'USD', 'EURO')),
+                         account_type BIGINT CHECK (account_type in (0, 1, 2, 3)),
                          transfer_code BIGINT UNIQUE NOT NULL,
                          FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE,
 );
@@ -75,3 +75,7 @@ BEGIN
     SET updated_at = GETDATE()
     WHERE id IN (SELECT DISTINCT id FROM Inserted);
 END;
+
+
+CREATE SEQUENCE account_sequence START WITH 852963 INCREMENT BY 1;
+CREATE SEQUENCE user_sequence START WITH 564982 INCREMENT BY 1;
