@@ -58,8 +58,8 @@ CREATE TABLE TRANSACTIONS (
 CREATE TABLE CURRENCY_EXCHANGE (
                                    id BIGINT PRIMARY KEY,
                                    transaction_id BIGINT,
-                                   from_currency NVARCHAR CHECK (from_currency in ('TR', 'USD', 'EURO')),
-                                   to_currency NVARCHAR CHECK (from_currency in ('TR', 'USD', 'EURO')),
+                                   from_currency NVARCHAR CHECK (from_currency in ('TRY', 'USD', 'EUR')),
+                                   to_currency NVARCHAR CHECK (from_currency in ('TRY', 'USD', 'EUR')),
                                    exchange_rate DECIMAL(10, 4) NOT NULL,
                                    exchange_date DATE NOT NULL,
      FOREIGN KEY (transaction_id) references TRANSACTIONS(id) ON DELETE CASCADE
