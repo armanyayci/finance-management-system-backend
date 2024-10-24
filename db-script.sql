@@ -22,7 +22,6 @@ CREATE TABLE USER_ROLES (
                             user_id BIGINT,
                             role_id BIGINT,
                             PRIMARY KEY (user_id, role_id),
-                            assigned_at smalldatetime DEFAULT CURRENT_TIMESTAMP
                             FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE,
                             FOREIGN KEY (role_id) REFERENCES ROLES(id) ON DELETE CASCADE,
 );
@@ -32,7 +31,7 @@ CREATE TABLE ACCOUNT (
                          user_id BIGINT,
                          balance BIGINT DEFAULT 0,
                          account_type BIGINT CHECK (account_type in (0, 1, 2, 3)),
-                         transfer_code BIGINT UNIQUE NOT NULL,
+                         transfer_code VARCHAR(255) UNIQUE NOT NULL,
                          FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE,
 );
 
