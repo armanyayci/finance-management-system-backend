@@ -16,4 +16,9 @@ public class RestExceptionHandler {
         GenericResponse<Void> response = GenericResponse.error(exception.getMessage());
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(value = CurrencyExchangeException.class)
+    public ResponseEntity<GenericResponse<Void>> handleCurrencyExchangeException(CurrencyExchangeException exception){
+        GenericResponse<Void> response = GenericResponse.error(exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
