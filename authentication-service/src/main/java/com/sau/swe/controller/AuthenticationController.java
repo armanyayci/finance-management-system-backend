@@ -4,6 +4,7 @@ import com.sau.swe.dto.LoginDto;
 import com.sau.swe.dto.SignUpDto;
 import com.sau.swe.dto.TokenResponse;
 import com.sau.swe.service.Abstract.AuthenticationService;
+import com.sau.swe.utils.response.GenericResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/authenticate")
 public class AuthenticationController {
 
    private final AuthenticationService authenticationService;
@@ -23,16 +24,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignUpDto sign) {
+    public GenericResponse<String> signup(@RequestBody SignUpDto sign) {
         authenticationService.signup(sign);
-        return ResponseEntity.ok("User Created Successfully");
+        return GenericResponse.success("generic.account.created");
     }
 
 
     @PostMapping("/login")
-    public TokenResponse login(@RequestBody LoginDto loginDto){
+    public GenericResponse<TokenResponse> login(@RequestBody LoginDto loginDto){
         TokenResponse tokenResponse = authenticationService.login(loginDto);
-        return tokenResponse;
+        return GenericResponse.success(tokenResponse);
 
     }
 }

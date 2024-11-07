@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
@@ -23,8 +24,11 @@ public class DataSourceConfig {
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
-            String sql = "select 1";
-            statement.execute(sql);
+            String sql = "select id from TRANSACTIONS";
+            ResultSet set = statement.executeQuery(sql);
+            while (set.next()){
+                System.out.println(set.getInt("id"));
+            }
             System.out.println("health check success.");    //TODO sout will be replaced with log4j2
         } catch (SQLException e) {
             System.out.println("health check success failed"); //TODO sout will be replaced with log4j2
