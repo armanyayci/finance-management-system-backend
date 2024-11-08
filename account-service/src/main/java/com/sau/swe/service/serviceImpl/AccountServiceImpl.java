@@ -21,7 +21,6 @@ public class AccountServiceImpl implements AccountService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
     public void createAccount(CreateAccountDTO dto)
     {
         accountRepository.save(Account.builder()

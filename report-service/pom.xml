@@ -37,6 +37,11 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>12.8.1.jre11</version>
         </dependency>
+        <dependency>
+            <groupId>com.sau.swe</groupId>
+            <artifactId>utils-module</artifactId>
+            <version>1.0-dev-financemgmt</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

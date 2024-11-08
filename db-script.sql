@@ -18,7 +18,7 @@ CREATE TABLE ROLES (
                        description VARCHAR(255),
 );
 
-CREATE TABLE USER_ROLES (
+CREATE TABLE USER_ROLE (
                             user_id BIGINT,
                             role_id BIGINT,
                             PRIMARY KEY (user_id, role_id),
@@ -77,4 +77,4 @@ END;
 
 
 CREATE SEQUENCE account_sequence START WITH 852963 INCREMENT BY 1;
-CREATE SEQUENCE user_sequence START WITH 564982 INCREMENT BY 1;
+CREATE SEQUENCE user_seq START WITH 564990 INCREMENT BY 1;
