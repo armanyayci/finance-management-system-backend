@@ -56,7 +56,16 @@
             <artifactId>jjwt-impl</artifactId>
             <version>0.11.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sau.swe</groupId>
+            <artifactId>utils-module</artifactId>
+            <version>1.0-dev-financemgmt</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

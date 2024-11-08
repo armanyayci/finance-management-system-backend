@@ -23,7 +23,7 @@ public class Account {
 
     @Column(name = "account_type")
     @Enumerated(EnumType.ORDINAL)
-    private AccountType accountType = AccountType.TR;
+    private AccountType accountType = AccountType.TRY;
 
     @Column(name = "transfer_code")
     private Long transferCode;
@@ -33,9 +33,8 @@ public class Account {
     private Users userId;
 
     public enum AccountType{
-        TR,
+        TRY,
         USD,
-        EURO,
-        XAU
+        EUR
     }
 }
