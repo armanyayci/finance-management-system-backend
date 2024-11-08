@@ -44,6 +44,7 @@
                 <artifactId>utils-module</artifactId>
                 <version>1.0-dev-financemgmt</version>
             </dependency>
+
         </dependencies>
     <build>
         <plugins>

@@ -31,6 +31,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sau.swe</groupId>
+            <artifactId>utils-module</artifactId>
+            <version>1.0-dev-financemgmt</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>

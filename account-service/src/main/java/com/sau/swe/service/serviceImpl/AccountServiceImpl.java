@@ -1,6 +1,8 @@
 package com.sau.swe.service.serviceImpl;
 
+import com.sau.swe.dto.BalanceRequest;
 import com.sau.swe.dto.CreateAccountDTO;
+import com.sau.swe.dto.TransferRequest;
 import com.sau.swe.entity.Account;
 import com.sau.swe.repository.AccountRepository;
 import com.sau.swe.repository.UserRepository;
@@ -30,6 +32,37 @@ public class AccountServiceImpl implements AccountService {
                 .transferCode(getTransferCode())
                 .build());
     }
+    @Override
+    public void addBalance(BalanceRequest balanceRequest) {
+        Account account=accountRepository.findById(balanceRequest.getAccountId())
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        account.setBalance((long) (account.getBalance()+balanceRequest.getAmount()));
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void moneyTransfer(TransferRequest request) {
+        Account senderAccount = accountRepository.findByUserId_Id(request.getSenderId())
+                .orElseThrow(() -> new RuntimeException("Sender Account not found"));
+
+        if (senderAccount.getBalance()<request.getMoney()){
+            throw new RuntimeException("insufficient funds");
+        }
+        Account recipientAccount =
+                accountRepository.findByTransferCode(request.getCode())
+                        .orElseThrow(() -> new RuntimeException("Recipient Account not found"));
+
+        senderAccount.setBalance(senderAccount.getBalance()-request.getMoney());
+        recipientAccount.setBalance(recipientAccount.getBalance()+request.getMoney());
+
+        accountRepository.save(senderAccount);
+        accountRepository.save(recipientAccount);
+
+
+
+    }
+
+
 
 
     private String getTransferCode(){
