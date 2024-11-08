@@ -1,7 +1,6 @@
 package com.sau.swe.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -22,48 +20,45 @@ import java.util.function.Function;
 @Log4j2
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret}") // Config properties dosyasından alacak şekilde ayarlayın
     private String SECRET_KEY;
-    @Value("${jwt.expire}")
+
+    @Value("${jwt.expiration}") // Config properties dosyasından alacak şekilde ayarlayın
     private Long EXPIRE_TIME;
+
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     public String getUsernameFromToken(String token) {
         try {
-            System.out.println(SECRET_KEY + EXPIRE_TIME);
             return getClaimFromToken(token, Claims::getSubject);
-        } catch (Exception UsernameNotFoundException) {
+        } catch (Exception e) {
             log.warn("Invalid username while getting from token");
-            throw UsernameNotFoundException;
+            throw e;
         }
-
     }
 
     public Date getExpirationDateFromToken(String token) {
-
         try {
             return getClaimFromToken(token, Claims::getExpiration);
         } catch (Exception e) {
-
-            log.warn("the expirations couldn't get from the token");
+            log.warn("Couldn't get expiration date from the token");
             throw e;
         }
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        try {
-            final Claims claims = getAllClaimsFromToken(token);
-            return claimsResolver.apply(claims);
-        } catch (Exception e) {
-            log.warn("claims couldnt get from the token with t function");
-            throw e;
-        }
-
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
     }
+
     private Claims getAllClaimsFromToken(String token) {
         try {
-            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+            return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
         } catch (Exception e) {
-            log.warn("couldnt get the informations from token with secret key");
+            log.warn("Couldn't get information from token with secret key");
             throw e;
         }
     }
@@ -73,41 +68,37 @@ public class JwtService {
             final Date expiration = getExpirationDateFromToken(token);
             return expiration.before(new Date());
         } catch (Exception e) {
-            log.warn("");
+            log.warn("Couldn't validate expiration date");
             throw e;
         }
-
     }
 
     public String generateToken(UserDetails userDetails) {
-        try {
-            Map<String, Object> claims = new HashMap<>();
-            return doGenerateToken(claims, userDetails.getUsername());
-        } catch (Exception e) {
-            log.warn("couldn't generate token with user details ");
-            throw e;
-        }
-
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, userDetails.getUsername());
     }
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
 
+    private String doGenerateToken(Map<String, Object> claims, String subject) {
         try {
             return Jwts.builder()
-                    .setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setClaims(claims)
+                    .setSubject(subject)
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME * 1000))
-                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                    .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                    .compact();
         } catch (Exception e) {
-            log.warn("couldnt dogeneratetoken ");
+            log.warn("Couldn't generate token");
             throw e;
         }
-
     }
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
             final String username = getUsernameFromToken(token);
             return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         } catch (Exception e) {
-            log.warn("couldnt validatetoken");
+            log.warn("Couldn't validate token");
             throw e;
         }
     }
