@@ -67,10 +67,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .lastName(sign.getLastname())
                 .createdAt(LocalDateTime.now())
                 .build();
-        usersRepository.save(user);
         Roles userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new GenericFinanceException("generic.auth.signIn"));
         user.setRoles(List.of(userRole));
+        usersRepository.save(user);
         CreateAccountDTO accountDTO = CreateAccountDTO.builder()
                 .userId(usersRepository.findByUsername(user.getUsername()).get().getId())
                 .accountType("TRY")
