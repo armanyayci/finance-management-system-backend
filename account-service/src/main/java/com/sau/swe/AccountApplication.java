@@ -8,9 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Collections;
 
 @SpringBootApplication
-public class Application {
+public class AccountApplication {
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Application.class);
-        app.setDefaultProperties(Collections.singletonMap("server.port", Constants.CURRENCY_EXCHANGE_RUN_PORT));
+        SpringApplication app = new SpringApplication(AccountApplication.class);
+        app.setDefaultProperties(Collections.singletonMap("server.port", Constants.ACCOUNT_RUN_PORT));
         app.run(args);
-    }}
+    }
+}
