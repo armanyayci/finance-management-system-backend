@@ -1,5 +1,6 @@
 package com.sau.swe.service;
 
+import com.sau.swe.dto.AccountResponse;
 import com.sau.swe.dto.BalanceRequest;
 import com.sau.swe.dto.CreateAccountDTO;
 import com.sau.swe.dto.TransferRequest;
@@ -14,4 +15,6 @@ public interface AccountService {
     void moneyTransfer(TransferRequest request);
 
     void addBalance(BalanceRequest balanceRequest);
+
+    AccountResponse getAccountByUserId(Long userId);
 }

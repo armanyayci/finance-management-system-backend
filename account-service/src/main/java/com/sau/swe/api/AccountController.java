@@ -1,8 +1,6 @@
 package com.sau.swe.api;
 
-import com.sau.swe.dto.BalanceRequest;
-import com.sau.swe.dto.CreateAccountDTO;
-import com.sau.swe.dto.TransferRequest;
+import com.sau.swe.dto.*;
 import com.sau.swe.service.AccountService;
 import com.sau.swe.utils.response.GenericResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +27,10 @@ public class AccountController {
         accountService.addBalance(balanceRequest);
         return GenericResponse.success("generic.account.balance");
     }
+    @GetMapping("/get-account/{userId}")
+    public GenericResponse<AccountResponse>getAccountByUserId(@PathVariable("userId") Long userId){
+        AccountResponse accountResponse=accountService.getAccountByUserId(userId);
+        return GenericResponse.success(accountResponse);
+    }
+
 }

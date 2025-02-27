@@ -1,5 +1,6 @@
 package com.sau.swe.service.serviceImpl;
 
+import com.sau.swe.dto.AccountResponse;
 import com.sau.swe.dto.BalanceRequest;
 import com.sau.swe.dto.CreateAccountDTO;
 import com.sau.swe.dto.TransferRequest;
@@ -39,6 +40,17 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance((long) (account.getBalance()+balanceRequest.getAmount()));
         accountRepository.save(account);
     }
+
+    @Override
+    public AccountResponse getAccountByUserId(Long userId) {
+        Account account=accountRepository.findByUserId_Id(userId).orElseThrow();
+        AccountResponse accountResponse=new AccountResponse();
+        accountResponse.setAccountType(String.valueOf(account.getAccountType()));
+        accountResponse.setBalance(account.getBalance());
+        accountResponse.setTransferCode(getTransferCode());
+        return accountResponse;
+    }
+
 
     @Override
     public void moneyTransfer(TransferRequest request) {
