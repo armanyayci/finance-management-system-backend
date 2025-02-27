@@ -42,13 +42,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse getAccountByUserId(Long userId) {
-        Account account=accountRepository.findByUserId_Id(userId).orElseThrow();
-        AccountResponse accountResponse=new AccountResponse();
-        accountResponse.setAccountType(String.valueOf(account.getAccountType()));
-        accountResponse.setBalance(account.getBalance());
-        accountResponse.setTransferCode(getTransferCode());
-        return accountResponse;
+    public AccountResponse getAccountByUsername(String username) {
+        return accountRepository.getAccountInfo(username);
     }
 
 

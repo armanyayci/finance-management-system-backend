@@ -16,5 +16,5 @@ public interface AccountService {
 
     void addBalance(BalanceRequest balanceRequest);
 
-    AccountResponse getAccountByUserId(Long userId);
+    AccountResponse getAccountByUsername(String username);
 }
