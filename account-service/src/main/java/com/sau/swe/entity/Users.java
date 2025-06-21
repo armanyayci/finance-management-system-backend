@@ -53,4 +53,8 @@ public class Users {
         INACTIVE,
         SUSPENDED
     }
+
+    public String getUserCredential(){
+        return firstName + " " + lastName;
+    }
 }

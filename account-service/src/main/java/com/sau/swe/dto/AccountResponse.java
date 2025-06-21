@@ -4,12 +4,15 @@ import com.sau.swe.entity.Account;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 public class AccountResponse {
     private Long balance;
     private String accountType;
     private String transferCode;
+    private List<TransactionDTO> lastTransactions;
 
     public AccountResponse(Long balance, Integer accountType, String transferCode) {
         this.balance = balance;

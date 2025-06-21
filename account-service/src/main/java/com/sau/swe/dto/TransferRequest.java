@@ -13,4 +13,5 @@ public class TransferRequest {
     private Long senderId;
     private String code;
     private Long money;
+    private String description;
 }

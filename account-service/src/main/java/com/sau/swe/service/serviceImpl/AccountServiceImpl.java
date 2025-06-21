@@ -1,28 +1,35 @@
 package com.sau.swe.service.serviceImpl;
 
-import com.sau.swe.dto.AccountResponse;
-import com.sau.swe.dto.BalanceRequest;
-import com.sau.swe.dto.CreateAccountDTO;
-import com.sau.swe.dto.TransferRequest;
+import com.sau.swe.dto.*;
 import com.sau.swe.entity.Account;
+import com.sau.swe.entity.AccountActivities;
+import com.sau.swe.entity.Transaction;
+import com.sau.swe.repository.AccountActivitiesRepository;
 import com.sau.swe.repository.AccountRepository;
+import com.sau.swe.repository.TransactionRepository;
 import com.sau.swe.repository.UserRepository;
 import com.sau.swe.service.AccountService;
 import com.sau.swe.utils.Constants;
+import com.sau.swe.utils.exception.GenericFinanceException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
+@Log4j2
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
-
+    private final AccountActivitiesRepository accountActivitiesRepository;
+    private final TransactionRepository transactionRepository;
     @Override
     public void createAccount(CreateAccountDTO dto)
     {
@@ -36,28 +43,33 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void addBalance(BalanceRequest balanceRequest) {
         Account account=accountRepository.findById(balanceRequest.getAccountId())
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new GenericFinanceException("account.notfound"));
         account.setBalance((long) (account.getBalance()+balanceRequest.getAmount()));
         accountRepository.save(account);
     }
 
     @Override
     public AccountResponse getAccountByUsername(String username) {
-        return accountRepository.getAccountInfo(username);
+        AccountResponse accountResponse = accountRepository.getAccountInfo(username);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(3);
+        List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,startDate);
+        accountResponse.setLastTransactions(accountTransactions);
+        return accountResponse;
     }
 
 
     @Override
+    @Transactional
     public void moneyTransfer(TransferRequest request) {
         Account senderAccount = accountRepository.findByUserId_Id(request.getSenderId())
-                .orElseThrow(() -> new RuntimeException("Sender Account not found"));
+                .orElseThrow(() -> new GenericFinanceException("account.sender.notfound"));
 
         if (senderAccount.getBalance()<request.getMoney()){
-            throw new RuntimeException("insufficient funds");
+            throw new GenericFinanceException("account.insufficient.funds");
         }
         Account recipientAccount =
                 accountRepository.findByTransferCode(request.getCode())
-                        .orElseThrow(() -> new RuntimeException("Recipient Account not found"));
+                        .orElseThrow(() -> new GenericFinanceException("account.transfercode.notfound"));
 
         senderAccount.setBalance(senderAccount.getBalance()-request.getMoney());
         recipientAccount.setBalance(recipientAccount.getBalance()+request.getMoney());
@@ -65,11 +77,31 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(senderAccount);
         accountRepository.save(recipientAccount);
 
+        Transaction transaction = Transaction.builder()
+                .amount(request.getMoney())
+                .category("TRANSFER")
+                .paymentType(Transaction.PaymentType.CASH)
+                .transactionTime(LocalDateTime.now())
+                .build();
+        transactionRepository.save(transaction);
 
+        AccountActivities senderActivity = AccountActivities.builder()
+                .description("Money Transfer to " + recipientAccount.getUserId().getUserCredential() + " - Description: " + request.getDescription())
+                .transaction(transaction)
+                .account(senderAccount)
+                .isIncome(false)
+                .build();
 
+        accountActivitiesRepository.save(senderActivity);
+        AccountActivities recipientActivity= AccountActivities.builder()
+                .description("Money transfer from " + senderAccount.getUserId().getUserCredential() + " - Description: " + request.getDescription())
+                .transaction(transaction)
+                .account(recipientAccount)
+                .isIncome(true)
+                .build();
+        accountActivitiesRepository.save(recipientActivity);
+        log.info("save transaction completed. SenderId: {}, RecipientId: {}", senderAccount.getUserId().getId(), recipientAccount.getUserId().getId());
     }
-
-
 
 
     private String getTransferCode(){
