@@ -8,18 +8,19 @@
     <artifactId>finance-management</artifactId>
     <version>1.0-dev-financemgmt</version>
     <packaging>pom</packaging>
+
     <modules>
-        <module>mock-service</module>
-        <module>authentication-service</module>
-        <module>notification-service</module>
+        <module>utils-module</module>
+        <module>config-service</module>
         <module>discovery-server</module>
-        <module>api-gateway</module>
+        <module>authentication-service</module>
+        <module>user-service</module>
+        <module>account-service</module>
+        <module>notification-service</module>
         <module>report-service</module>
         <module>currency-exchange-service</module>
-        <module>config-service</module>
-        <module>account-service</module>
-        <module>utils-module</module>
-        <module>user-service</module>
+        <module>api-gateway</module>
+        <module>mock-service</module>
     </modules>
 
     <properties>
@@ -28,8 +29,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.3.4</spring-boot.version>
     </properties>
+
     <dependencies>
-    <!--    implement dependencies which is applied for all modules     -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -58,5 +59,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

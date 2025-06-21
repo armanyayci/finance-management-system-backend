@@ -10,9 +10,9 @@ import com.sau.swe.repository.RoleRepository;
 import com.sau.swe.repository.UsersRepository;
 import com.sau.swe.security.JwtService;
 import com.sau.swe.service.Abstract.AuthenticationService;
+
 import com.sau.swe.utils.Constants;
 import com.sau.swe.utils.exception.GenericFinanceException;
-import com.sau.swe.utils.response.GenericResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
