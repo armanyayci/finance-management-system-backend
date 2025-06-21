@@ -1,6 +1,7 @@
 package com.sau.swe.config;
 
 import com.sau.swe.repository.UsersRepository;
+
 import com.sau.swe.utils.exception.GenericFinanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
