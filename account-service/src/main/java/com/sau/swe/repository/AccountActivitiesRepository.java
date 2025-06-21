@@ -1,0 +1,24 @@
+package com.sau.swe.repository;
+
+import com.sau.swe.dto.TransactionDTO;
+import com.sau.swe.entity.AccountActivities;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Repository
+public interface AccountActivitiesRepository extends CrudRepository<AccountActivities, Long> {
+
+    @Query(value = "select new com.sau.swe.dto.TransactionDTO(" +
+            "aa.description, t.amount, t.paymentType, t.category, t.transactionTime, aa.isIncome) " +
+            "from AccountActivities aa " +
+            "inner join aa.transaction t " +
+            "inner join aa.account acc " +
+            "inner join acc.userId user " +
+            "where user.username =:username and t.transactionTime >= :startDate")
+    List<TransactionDTO> getTransactionListByAccountId(@Param("username") String username, @Param("startDate") LocalDateTime startDate);
+}
