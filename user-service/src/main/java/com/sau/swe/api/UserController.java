@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<?> getUsers(@RequestParam(required = false) Long id){
+    public ResponseEntity<?> getUsers(@RequestParam(name = "id", required = false) Long id){
         if(id != null){
             return ResponseEntity.ok(userService.getUserById(id));
         }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/currency-exchange")
+@RequestMapping("/api/currency-exchange")
 public class CurrencyExchangeController {
 
     private final CurrencyExchangeService currencyExchangeService;

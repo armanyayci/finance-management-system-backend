@@ -51,7 +51,7 @@ CREATE TABLE TRANSACTIONS (
                           id BIGINT PRIMARY KEY,
                           amount DECIMAL(15, 2),
                           category VARCHAR(50),
-                          payment_type NVARCHAR CHECK (payment_type in ('CASH','CREDIT_CARD','EXCHANGE')),
+                          payment_type NVARCHAR(20) CHECK (payment_type in ('CASH','CREDIT_CARD','EXCHANGE')),
                           transaction_time smalldatetime DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -75,6 +75,13 @@ BEGIN
     WHERE id IN (SELECT DISTINCT id FROM Inserted);
 END;
 
+alter table ACCOUNT_ACTIVITIES
+    add is_income bit;
+
+ALTER TABLE ACCOUNT_ACTIVITIES
+drop column expense_date;
 
 CREATE SEQUENCE account_sequence START WITH 852963 INCREMENT BY 1;
 CREATE SEQUENCE user_seq START WITH 564990 INCREMENT BY 1;
+CREATE SEQUENCE acc_activity_sequence START WITH 325641 INCREMENT BY 1;
+CREATE SEQUENCE transactions_sequence START WITH 256314 INCREMENT BY 1;
