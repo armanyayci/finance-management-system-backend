@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
         transactionRepository.save(transaction);
 
         AccountActivities senderActivity = AccountActivities.builder()
-                .description("Money Transfer to " + senderAccount.getUserId().getFirstName() + " " + senderAccount.getUserId().getLastName())
+                .description("Money Transfer to " + recipientAccount.getUserId().getUserCredential() + " - Description: " + request.getDescription())
                 .transaction(transaction)
                 .account(senderAccount)
                 .isIncome(false)
@@ -94,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
 
         accountActivitiesRepository.save(senderActivity);
         AccountActivities recipientActivity= AccountActivities.builder()
-                .description("Money transfer from " + recipientAccount.getUserId().getFirstName() + " " + recipientAccount.getUserId().getLastName())
+                .description("Money transfer from " + senderAccount.getUserId().getUserCredential() + " - Description: " + request.getDescription())
                 .transaction(transaction)
                 .account(recipientAccount)
                 .isIncome(true)
