@@ -57,6 +57,10 @@ public class AccountServiceImpl implements AccountService {
         return accountResponse;
     }
 
+    @Override
+    public List<TransactionDTO> expenseAnalyze(String username,LocalDateTime startDate,LocalDateTime endDate) {
+        return accountActivitiesRepository.getTransactionListByAccountIdForSpecificDateRange(username,startDate,endDate);
+    }
 
     @Override
     @Transactional

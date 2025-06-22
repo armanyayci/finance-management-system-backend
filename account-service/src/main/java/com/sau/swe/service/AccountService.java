@@ -1,10 +1,10 @@
 package com.sau.swe.service;
 
-import com.sau.swe.dto.AccountResponse;
-import com.sau.swe.dto.BalanceRequest;
-import com.sau.swe.dto.CreateAccountDTO;
-import com.sau.swe.dto.TransferRequest;
+import com.sau.swe.dto.*;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public interface AccountService {
@@ -17,4 +17,6 @@ public interface AccountService {
     void addBalance(BalanceRequest balanceRequest);
 
     AccountResponse getAccountByUsername(String username);
+
+    List<TransactionDTO> expenseAnalyze(String username, LocalDateTime startDate, LocalDateTime endDate);
 }
