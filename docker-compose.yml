@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+  discovery-server:
+    build: ./discovery-server
+    image: discovery-server
+    container_name: discovery-server
+    ports:
+      - "8086:8086"
+
+  config-service:
+    build: ./config-service
+    image: config-service
+    container_name: config-service
+    depends_on:
+      - discovery-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+
+  api-gateway:
+    build: ./api-gateway
+    image: api-gateway
+    container_name: api-gateway
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+
+  authentication-service:
+    build: ./authentication-service
+    image: authentication-service
+    container_name: authentication-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - DB_URL=${DB_URL}
+      - DB_DRIVER=${DB_DRIVER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - HIKARI_MAX_POOL_SIZE=${HIKARI_MAX_POOL_SIZE}
+      - HIKARI_MIN_IDLE=${HIKARI_MIN_IDLE}
+      - HIKARI_IDLE_TIMEOUT=${HIKARI_IDLE_TIMEOUT}
+      - HIKARI_CONN_TIMEOUT=${HIKARI_CONN_TIMEOUT}
+      - HIKARI_MAX_LIFETIME=${HIKARI_MAX_LIFETIME}
+
+  account-service:
+    build: ./account-service
+    image: account-service
+    container_name: account-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - DB_URL=${DB_URL}
+      - DB_DRIVER=${DB_DRIVER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - HIKARI_MAX_POOL_SIZE=${HIKARI_MAX_POOL_SIZE}
+      - HIKARI_MIN_IDLE=${HIKARI_MIN_IDLE}
+      - HIKARI_IDLE_TIMEOUT=${HIKARI_IDLE_TIMEOUT}
+      - HIKARI_CONN_TIMEOUT=${HIKARI_CONN_TIMEOUT}
+      - HIKARI_MAX_LIFETIME=${HIKARI_MAX_LIFETIME}
+
+  report-service:
+    build: ./report-service
+    image: report-service
+    container_name: report-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - DB_URL=${DB_URL}
+      - DB_DRIVER=${DB_DRIVER}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
+
+  currency-exchange-service:
+    build: ./currency-exchange-service
+    image: currency-exchange-service
+    container_name: currency-exchange-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8083:8083"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+
+  user-service:
+    build: ./user-service
+    image: user-service
+    container_name: user-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8084:8084"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
+
+  notification-service:
+    build: ./notification-service
+    image: notification-service
+    container_name: notification-service
+    depends_on:
+      - discovery-server
+      - config-service
+    ports:
+      - "8085:8085"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - CONFIG_SERVER_URL=http://config-service:8888
