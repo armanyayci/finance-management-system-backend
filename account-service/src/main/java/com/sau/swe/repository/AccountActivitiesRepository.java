@@ -21,4 +21,14 @@ public interface AccountActivitiesRepository extends CrudRepository<AccountActiv
             "inner join acc.userId user " +
             "where user.username =:username and t.transactionTime >= :startDate")
     List<TransactionDTO> getTransactionListByAccountId(@Param("username") String username, @Param("startDate") LocalDateTime startDate);
+
+
+    @Query(value = "select new com.sau.swe.dto.TransactionDTO(" +
+            "aa.description, t.amount, t.paymentType, t.category, t.transactionTime, aa.isIncome) " +
+            "from AccountActivities aa " +
+            "inner join aa.transaction t " +
+            "inner join aa.account acc " +
+            "inner join acc.userId user " +
+            "where user.username =:username and t.transactionTime >= :startDate and t.transactionTime <= :endDate")
+    List<TransactionDTO> getTransactionListByAccountIdForSpecificDateRange(@Param("username") String username, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
