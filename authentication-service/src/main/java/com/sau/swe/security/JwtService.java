@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Log4j2
 public class JwtService {
 
-    @Value("${jwt.secret}") // Config properties dosyasından alacak şekilde ayarlayın
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    @Value("${jwt.expiration}") // Config properties dosyasından alacak şekilde ayarlayın
+    @Value("${jwt.expiration}")
     private Long EXPIRE_TIME;
 
     private Key getSignInKey() {

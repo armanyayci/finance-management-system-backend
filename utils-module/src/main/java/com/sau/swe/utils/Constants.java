@@ -17,7 +17,7 @@ public class Constants {
     public static final Integer REPORT_RUN_PORT = 8082;
     public static final Integer CURRENCY_EXCHANGE_RUN_PORT = 8083;
     public static final Integer USER_RUN_PORT = 8084;
-    public static final Integer DISCOVERY_SERVER_RUN_PORT = 8085;
+    public static final Integer DISCOVERY_SERVER_RUN_PORT = 8761;
     public static final Integer API_GATEWAY_RUN_PORT = 8086;
 
 

@@ -57,6 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    @Transactional
     @Override
     public void signup(SignUpDto sign) {
         Users user=Users.builder()
