@@ -36,8 +36,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(
-                                        "/api/authenticate/**").permitAll()
-                                .requestMatchers("/api/**").authenticated()
+                                        "/finance-mgmt/api/authenticate/**").permitAll()
+                                .requestMatchers("/finance-mgmt/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(financeExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
