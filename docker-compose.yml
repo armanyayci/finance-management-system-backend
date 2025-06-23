@@ -44,21 +44,31 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - SPRING_APPLICATION_NAME=authentication-service       # 👈 Config Server hangi dosyayı vereceğini buradan bilir
+      - SPRING_PROFILES_ACTIVE=default                       # 👈 profile'ı belirle
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
-      - CONFIG_SERVER_URL=http://config-service:8888
+      - CONFIG_SERVER_URL=http://config-service:8888        # 👈 config-server adresi
+      - spring.config.import=optional:configserver:http://config-service:8888 # 👈 yeni Spring sürümlerinde gerekebilir
+
+      # Database Configs (ister burada ister config-server'da olsun)
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
       - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
       - finance.mssql.db.username=armanyay_root
       - finance.mssql.db.password=14ap_0L8q
       - finance.mssql.db.databaseName=armanyay_financemgmt
       - finance.mssql.db.trustSertificate=true
+
+      # Hikari
       - finance.db.hikari.maxPoolSize=10
       - finance.db.hikari.minIdle=5
       - finance.db.hikari.idleTimeOut=30000
       - finance.db.hikari.connTimeout=20000
       - finance.db.hikari.maxLifeTime=180000
+
+      # JWT
       - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
       - jwt.expiration=86400
+
 
   account-service:
     build: ./account-service
@@ -70,6 +80,7 @@ services:
     ports:
       - "8081:8081"
     environment:
+      - SPRING_APPLICATION_NAME=account-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
@@ -96,6 +107,7 @@ services:
     ports:
       - "8082:8082"
     environment:
+      - SPRING_APPLICATION_NAME=report-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
@@ -122,6 +134,7 @@ services:
     ports:
       - "8083:8083"
     environment:
+      - SPRING_APPLICATION_NAME=currency-exchange-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
@@ -148,6 +161,7 @@ services:
     ports:
       - "8084:8084"
     environment:
+      - SPRING_APPLICATION_NAME=user-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
@@ -174,6 +188,7 @@ services:
     ports:
       - "8085:8085"
     environment:
+      - SPRING_APPLICATION_NAME=notification-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
