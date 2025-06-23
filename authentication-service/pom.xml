@@ -79,6 +79,15 @@
             <resource>
                 <directory>../config-service/properties/</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>
+                        authentication-service.properties
+                    </include>
+                    <include>
+                        application.properties
+                    </include>
+                </includes>
+
             </resource>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
