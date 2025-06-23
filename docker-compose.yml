@@ -6,7 +6,7 @@ services:
     image: discovery-server
     container_name: discovery-server
     ports:
-      - "8086:8086"
+      - "8761:8761"
 
   config-service:
     build: ./config-service
@@ -18,7 +18,7 @@ services:
       - "8888:8888"
     environment:
       - SPRING_PROFILES_ACTIVE=default
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
 
   api-gateway:
     build: ./api-gateway
@@ -31,7 +31,7 @@ services:
       - "8087:8087"
     environment:
       - SPRING_PROFILES_ACTIVE=default
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
 
   authentication-service:
@@ -44,21 +44,21 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
-      - DB_URL=${DB_URL}
-      - DB_DRIVER=${DB_DRIVER}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-      - HIKARI_MAX_POOL_SIZE=${HIKARI_MAX_POOL_SIZE}
-      - HIKARI_MIN_IDLE=${HIKARI_MIN_IDLE}
-      - HIKARI_IDLE_TIMEOUT=${HIKARI_IDLE_TIMEOUT}
-      - HIKARI_CONN_TIMEOUT=${HIKARI_CONN_TIMEOUT}
-      - HIKARI_MAX_LIFETIME=${HIKARI_MAX_LIFETIME}
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
 
   account-service:
     build: ./account-service
@@ -70,21 +70,21 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
-      - DB_URL=${DB_URL}
-      - DB_DRIVER=${DB_DRIVER}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-      - HIKARI_MAX_POOL_SIZE=${HIKARI_MAX_POOL_SIZE}
-      - HIKARI_MIN_IDLE=${HIKARI_MIN_IDLE}
-      - HIKARI_IDLE_TIMEOUT=${HIKARI_IDLE_TIMEOUT}
-      - HIKARI_CONN_TIMEOUT=${HIKARI_CONN_TIMEOUT}
-      - HIKARI_MAX_LIFETIME=${HIKARI_MAX_LIFETIME}
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
 
   report-service:
     build: ./report-service
@@ -96,14 +96,21 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
-      - DB_URL=${DB_URL}
-      - DB_DRIVER=${DB_DRIVER}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_TRUST_CERTIFICATE=${DB_TRUST_CERTIFICATE}
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
 
   currency-exchange-service:
     build: ./currency-exchange-service
@@ -115,8 +122,21 @@ services:
     ports:
       - "8083:8083"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
 
   user-service:
     build: ./user-service
@@ -128,8 +148,21 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
 
   notification-service:
     build: ./notification-service
@@ -141,5 +174,18 @@ services:
     ports:
       - "8085:8085"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8086/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
+      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
+      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - finance.mssql.db.username=armanyay_root
+      - finance.mssql.db.password=14ap_0L8q
+      - finance.mssql.db.databaseName=armanyay_financemgmt
+      - finance.mssql.db.trustSertificate=true
+      - finance.db.hikari.maxPoolSize=10
+      - finance.db.hikari.minIdle=5
+      - finance.db.hikari.idleTimeOut=30000
+      - finance.db.hikari.connTimeout=20000
+      - finance.db.hikari.maxLifeTime=180000
+      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
+      - jwt.expiration=86400
