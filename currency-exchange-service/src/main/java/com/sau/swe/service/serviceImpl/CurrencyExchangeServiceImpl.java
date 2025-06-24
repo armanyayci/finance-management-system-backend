@@ -86,7 +86,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
 
         if (currentAccountCurrency.isPresent()) {
             accountCurrency = currentAccountCurrency.get();
-            BigDecimal newAmount = accountCurrency.getAmount().add(totalExchange);
+            BigDecimal newAmount = accountCurrency.getAmount().add(conversionRequest.getAmount());
             accountCurrency.setAmount(newAmount);
             accountCurrencyRepository.save(accountCurrency);
             log.info("Currency Exchange - Buy - AccountCurrency amount updated to {}. ID: " , accountCurrency.getId());
