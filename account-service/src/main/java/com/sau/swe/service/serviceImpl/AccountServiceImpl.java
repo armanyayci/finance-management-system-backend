@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -44,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
     public void addBalance(BalanceRequest balanceRequest) {
         Account account=accountRepository.findById(balanceRequest.getAccountId())
                 .orElseThrow(() -> new GenericFinanceException("account.notfound"));
-        account.setBalance((long) (account.getBalance()+balanceRequest.getAmount()));
+        account.setBalance(account.getBalance().add(balanceRequest.getAmount()));
         accountRepository.save(account);
     }
 
@@ -68,15 +67,15 @@ public class AccountServiceImpl implements AccountService {
         Account senderAccount = accountRepository.findByUserId_Id(request.getSenderId())
                 .orElseThrow(() -> new GenericFinanceException("account.sender.notfound"));
 
-        if (senderAccount.getBalance()<request.getMoney()){
+        if (senderAccount.getBalance().compareTo(request.getMoney()) < 0){
             throw new GenericFinanceException("account.insufficient.funds");
         }
         Account recipientAccount =
                 accountRepository.findByTransferCode(request.getCode())
                         .orElseThrow(() -> new GenericFinanceException("account.transfercode.notfound"));
 
-        senderAccount.setBalance(senderAccount.getBalance()-request.getMoney());
-        recipientAccount.setBalance(recipientAccount.getBalance()+request.getMoney());
+        senderAccount.setBalance(senderAccount.getBalance().subtract(request.getMoney()));
+        recipientAccount.setBalance(recipientAccount.getBalance().add(request.getMoney()));
 
         accountRepository.save(senderAccount);
         accountRepository.save(recipientAccount);
