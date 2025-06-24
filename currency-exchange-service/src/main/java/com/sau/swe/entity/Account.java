@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "ACCOUNT")
@@ -35,10 +36,12 @@ public class Account {
     @JoinColumn(name = "user_id")
     private Users userId;
 
+    @OneToMany(mappedBy = "account")
+    private List<AccountCurrency> currencies;
+
     public enum AccountType{
         TRY,
         USD,
         EUR
     }
 }
-

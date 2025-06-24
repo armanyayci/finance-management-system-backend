@@ -15,4 +15,6 @@ public class CurrencyConversionRequest {
     private String fromCurrency;
     private String toCurrency;
     private BigDecimal amount;
+    private BigDecimal conversionRate;
+    private Long userId;
 }
