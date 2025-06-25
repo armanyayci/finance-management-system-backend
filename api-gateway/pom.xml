@@ -30,6 +30,12 @@
             <groupId>com.sau.swe</groupId>
             <artifactId>utils-module</artifactId>
             <version>1.0-dev-financemgmt</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
         <dependency>
