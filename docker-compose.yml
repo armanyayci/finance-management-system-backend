@@ -34,9 +34,10 @@ services:
     ports:
       - "8086:8086"
     environment:
+      - SPRING_APPLICATION_NAME=api-gateway
       - SPRING_PROFILES_ACTIVE=default
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
-      - CONFIG_SERVER_URL=http://config-service:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-service:8888
     networks:
       - common
 
