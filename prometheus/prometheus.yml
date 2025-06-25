@@ -1,0 +1,41 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'api_gateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'api-gateway:8086' ]
+        labels:
+          application: 'API Gateway Application'
+  - job_name: 'authentication_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['authentication-service:8080']
+        labels:
+          application: 'Authentication Service Application'
+  - job_name: 'account_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['account-service:8081']
+        labels:
+          application: 'Account Service Application'
+  - job_name: 'report_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['report-service:8082']
+        labels:
+          application: 'Report Service Application'
+  - job_name: 'currency_exchange_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'currency-exchange-service:8083' ]
+        labels:
+          application: 'Currency Exchange Service Application'
+  - job_name: 'user_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['user-service:8084']
+        labels:
+          application: 'User Service Application'
