@@ -2,10 +2,7 @@ package com.sau.swe.service.concrete;
 
 import com.sau.swe.dao.RoleRepository;
 import com.sau.swe.dao.UserRepository;
-import com.sau.swe.dto.CreateAccountDTO;
-import com.sau.swe.dto.LoginDto;
-import com.sau.swe.dto.SignUpDto;
-import com.sau.swe.dto.TokenResponse;
+import com.sau.swe.dto.*;
 import com.sau.swe.entity.Roles;
 import com.sau.swe.entity.Users;
 import com.sau.swe.security.JwtService;
@@ -104,5 +101,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Failed to request to the URL: " + url);
             throw new GenericFinanceException(e.getMessage());
         }
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(PasswordChangeRequest request) {
+        Users user = usersRepository.findById(request.userId).orElseThrow(
+                ()-> new GenericFinanceException("generic.auth.userNotFound"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new GenericFinanceException("user.profile.incorrectPassword");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        usersRepository.save(user);
     }
 }
