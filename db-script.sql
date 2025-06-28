@@ -67,6 +67,16 @@ CREATE TABLE CURRENCY_EXCHANGE (
      FOREIGN KEY (transaction_id) references TRANSACTIONS(id) ON DELETE CASCADE
 );
 
+CREATE TABLE FINANCIAL_GOALS (
+                                   id BIGINT PRIMARY KEY,
+                                   description NVARCHAR (200),
+                                   account_type BIGINT CHECK (account_type in (0, 1, 2, 3)),
+                                   amount DECIMAL(10, 4) NOT NULL,
+                                   user_id BIGINT,
+                                   created_at DATE NOT NULL,
+                                   FOREIGN KEY (user_id) references USERS(id) ON DELETE CASCADE
+);
+
 CREATE TRIGGER SetUpdatedAt
     ON USERS
     AFTER UPDATE
@@ -89,6 +99,7 @@ CREATE SEQUENCE acc_activity_sequence START WITH 325641 INCREMENT BY 1;
 CREATE SEQUENCE transactions_sequence START WITH 256314 INCREMENT BY 1;
 CREATE SEQUENCE currency_sequence START WITH 102363 INCREMENT BY 1;
 CREATE SEQUENCE currency_exchange_sequence START WITH 405698 INCREMENT BY 1;
+CREATE SEQUENCE goal_sequence START WITH 17524 INCREMENT BY 1;
 create table ACCOUNT_CURRENCY(
                          id BIGINT primary key,
                          currency_name varchar(50),
