@@ -1,12 +1,11 @@
 package com.sau.swe.api;
 
 import com.sau.swe.interfaces.UserService;
+import com.sau.swe.utils.response.GenericResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +19,13 @@ public class UserController {
             return ResponseEntity.ok(userService.getUserById(id));
         }
         return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PostMapping("/add-image/{userId}")
+    public ResponseEntity<GenericResponse<Void>> uploadProfileImage(
+            @PathVariable("userId") Long userId,
+            @RequestParam("file") MultipartFile file) {
+        userService.addImage(userId, file);
+        return ResponseEntity.ok(GenericResponse.success("user.profile.add.image.success"));
     }
 }

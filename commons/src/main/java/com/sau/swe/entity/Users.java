@@ -51,6 +51,10 @@ public class Users {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
+    @Column(name = "image")
+    @Lob
+    private byte[] image;
+
     @OneToMany(mappedBy = "userId")
     private Set<Account> accounts;
 
