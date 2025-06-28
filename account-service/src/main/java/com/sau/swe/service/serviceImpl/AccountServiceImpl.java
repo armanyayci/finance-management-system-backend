@@ -1,13 +1,10 @@
 package com.sau.swe.service.serviceImpl;
 
+import com.sau.swe.dao.*;
 import com.sau.swe.dto.*;
 import com.sau.swe.entity.Account;
 import com.sau.swe.entity.AccountActivities;
 import com.sau.swe.entity.Transaction;
-import com.sau.swe.repository.AccountActivitiesRepository;
-import com.sau.swe.repository.AccountRepository;
-import com.sau.swe.repository.TransactionRepository;
-import com.sau.swe.repository.UserRepository;
 import com.sau.swe.service.AccountService;
 import com.sau.swe.utils.Constants;
 import com.sau.swe.utils.exception.GenericFinanceException;
