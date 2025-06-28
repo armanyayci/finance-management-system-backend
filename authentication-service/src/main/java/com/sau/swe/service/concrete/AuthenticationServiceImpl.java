@@ -14,6 +14,7 @@ import com.sau.swe.service.Abstract.AuthenticationService;
 
 import com.sau.swe.utils.Constants;
 import com.sau.swe.utils.exception.GenericFinanceException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -56,6 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public TokenResponse login(LoginDto loginDto) {
         try {
             Users user = usersRepository.findByUsername(loginDto.getUsername())
@@ -64,6 +66,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authenticationManager.authenticate
                     (new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword()));
 
+            user.setLastLogin(LocalDateTime.now());
+            usersRepository.save(user);
             String token = jwtService.generateToken(userImpl);
             return TokenResponse.builder().token(token).build();
         }

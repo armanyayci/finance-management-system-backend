@@ -48,6 +48,9 @@ public class Users {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
     @OneToMany(mappedBy = "userId")
     private Set<Account> accounts;
 

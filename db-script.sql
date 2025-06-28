@@ -8,6 +8,7 @@ CREATE TABLE USERS (
                        first_name VARCHAR(50),
                        last_name VARCHAR(50),
                        status INT CHECK (status in (0,1,2)) DEFAULT 0,
+                       last_login datetime,
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                        updated_at datetime DEFAULT GETDATE()
 );
