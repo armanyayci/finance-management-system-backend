@@ -1,10 +1,12 @@
 package com.sau.swe.interfaces;
 
-import com.sau.swe.entity.User;
+
+import com.sau.swe.entity.Users;
+
 import java.util.List;
 
 public interface UserService {
-    User getUserById(Long id);
+    Users getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<Users> getAllUsers();
 }
