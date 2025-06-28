@@ -9,7 +9,7 @@
         <version>1.0-dev-financemgmt</version>
     </parent>
 
-    <artifactId>accountCurrency-exchange-service</artifactId>
+    <artifactId>currency-exchange-service</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
