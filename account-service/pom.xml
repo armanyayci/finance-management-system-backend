@@ -93,7 +93,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>../config-service/properties/</directory>
+                <directory>../commons/src/main/resources/properties/</directory>
                 <filtering>true</filtering>
                 <!--<targetPath>${project.build.directory}/classes/</targetPath>-->
             </resource>
