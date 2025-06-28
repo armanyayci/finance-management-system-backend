@@ -45,12 +45,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse getAccountByUsername(String username) {
-        AccountResponse accountResponse = accountRepository.getAccountInfo(username);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(3);
-        List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,startDate);
-        accountResponse.setLastTransactions(accountTransactions);
-        return accountResponse;
+    public List<AccountResponse> getAccountByUsername(String username) {
+        List<AccountResponse> accountResponseList = accountRepository.getAccountInfo(username);
+        for (AccountResponse response : accountResponseList ) {
+            LocalDateTime startDate = LocalDateTime.now().minusDays(3);
+            List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,startDate);
+            response.setLastTransactions(accountTransactions);
+        }
+
+        return accountResponseList;
     }
 
     @Override
