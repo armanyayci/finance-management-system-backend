@@ -10,7 +10,8 @@ CREATE TABLE USERS (
                        status INT CHECK (status in (0,1,2)) DEFAULT 0,
                        last_login datetime,
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                       updated_at datetime DEFAULT GETDATE()
+                       updated_at datetime DEFAULT GETDATE(),
+                       image varbinary(max) null
 );
 
 CREATE TABLE ROLES (
