@@ -21,6 +21,7 @@
         <module>currency-exchange-service</module>
         <module>api-gateway</module>
         <module>mock-service</module>
+        <module>commons</module>
     </modules>
 
     <properties>
