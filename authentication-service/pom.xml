@@ -77,7 +77,7 @@
     <build>
         <resources>
             <resource>
-                <directory>../commons/src/main/resources/properties/</directory>
+                <directory>../commons/src/main/resources/</directory>
                 <filtering>true</filtering>
             </resource>
             <resource>
@@ -101,7 +101,7 @@
                             <rules>
                                 <requireFilesExist>
                                     <files>
-                                        <file>../config-service/properties</file>
+                                        <file>../commons/src/main/resources/application.properties</file>
                                     </files>
                                 </requireFilesExist>
                             </rules>
