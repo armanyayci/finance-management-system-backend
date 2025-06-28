@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,9 +19,9 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Query(value = "select new com.sau.swe.dto.AccountResponse(a.balance, CAST(a.accountType AS integer), a.transferCode )" +
             " FROM Account a" +
-            " LEFT JOIN a.userId au" +
+            " inner JOIN a.userId au" +
             " WHERE au.username = :username ")
-    AccountResponse getAccountInfo(@Param("username") String username);
+    List<AccountResponse> getAccountInfo(@Param("username") String username);
 
 
     @Query("select t from Account t " +

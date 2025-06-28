@@ -42,6 +42,7 @@ public class Account {
     public enum AccountType{
         TRY,
         USD,
-        EUR
+        EUR,
+        AU
     }
 }
