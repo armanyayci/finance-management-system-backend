@@ -58,6 +58,9 @@ public class Users {
     @OneToMany(mappedBy = "userId")
     private Set<Account> accounts;
 
+    @OneToMany(mappedBy = "user")
+    private List<FinancialGoals> goals;
+
     @ManyToMany(cascade = CascadeType.ALL
             , fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE"
