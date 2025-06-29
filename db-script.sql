@@ -77,6 +77,19 @@ CREATE TABLE FINANCIAL_GOALS (
                                    FOREIGN KEY (user_id) references USERS(id) ON DELETE CASCADE
 );
 
+CREATE TABLE EXPENSE (
+    id BIGINT PRIMARY KEY,
+    name NVARCHAR(255) NOT NULL,
+    description NVARCHAR(255),
+    amount DECIMAL(19,2) NOT NULL,
+    category NVARCHAR(255),
+    last_payment_date DATE,
+    is_recurring BIT,
+    is_paid bit,
+    user_id BIGINT NOT NULL,
+    CONSTRAINT FK_EXPENSE_USER FOREIGN KEY (user_id) REFERENCES USERS(id)
+    );
+
 CREATE TRIGGER SetUpdatedAt
     ON USERS
     AFTER UPDATE
@@ -100,6 +113,7 @@ CREATE SEQUENCE transactions_sequence START WITH 256314 INCREMENT BY 1;
 CREATE SEQUENCE currency_sequence START WITH 102363 INCREMENT BY 1;
 CREATE SEQUENCE currency_exchange_sequence START WITH 405698 INCREMENT BY 1;
 CREATE SEQUENCE goal_sequence START WITH 17524 INCREMENT BY 1;
+CREATE SEQUENCE expense_sequence START WITH 54802 INCREMENT BY 1;
 create table ACCOUNT_CURRENCY(
                          id BIGINT primary key,
                          currency_name varchar(50),
