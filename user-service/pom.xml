@@ -70,6 +70,12 @@
             <artifactId>zipkin-reporter-brave</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.sau.swe</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.0-dev-financemgmt</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -88,7 +94,7 @@
                             <rules>
                                 <requireFilesExist>
                                     <files>
-                                        <file>../config-service/properties</file>
+                                        <file>../commons/src/main/resources/application.properties</file>
                                     </files>
                                 </requireFilesExist>
                             </rules>
@@ -113,7 +119,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>../config-service/properties/</directory>
+                <directory>../commons/src/main/resources/</directory>
                 <filtering>true</filtering>
                 <includes>
                     <include>

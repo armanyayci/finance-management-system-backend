@@ -1,6 +1,7 @@
 package com.sau.swe.controller;
 
 import com.sau.swe.dto.LoginDto;
+import com.sau.swe.dto.PasswordChangeRequest;
 import com.sau.swe.dto.SignUpDto;
 import com.sau.swe.dto.TokenResponse;
 import com.sau.swe.service.Abstract.AuthenticationService;
@@ -34,6 +35,13 @@ public class AuthenticationController {
     public GenericResponse<TokenResponse> login(@RequestBody LoginDto loginDto){
         TokenResponse tokenResponse = authenticationService.login(loginDto);
         return GenericResponse.success(tokenResponse);
+
+    }
+
+    @PostMapping("/change-password")
+    public GenericResponse<Void> changePassword(@RequestBody PasswordChangeRequest request){
+        authenticationService.changePassword(request);
+        return GenericResponse.success("user.profile.password.changed");
 
     }
 }

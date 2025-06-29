@@ -16,7 +16,7 @@ public interface AccountService {
 
     void addBalance(BalanceRequest balanceRequest);
 
-    AccountResponse getAccountByUsername(String username);
+    List<AccountResponse> getAccountByUsername(String username);
 
     List<TransactionDTO> expenseAnalyze(String username, LocalDateTime startDate, LocalDateTime endDate);
 }

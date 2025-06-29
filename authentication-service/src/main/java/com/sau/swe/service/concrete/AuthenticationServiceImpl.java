@@ -1,14 +1,12 @@
 package com.sau.swe.service.concrete;
 
-import com.sau.swe.dto.CreateAccountDTO;
-import com.sau.swe.dto.LoginDto;
-import com.sau.swe.dto.SignUpDto;
-import com.sau.swe.dto.TokenResponse;
+import com.sau.swe.dao.RoleRepository;
+import com.sau.swe.dao.UserRepository;
+import com.sau.swe.dto.*;
 import com.sau.swe.entity.Roles;
 import com.sau.swe.entity.Users;
-import com.sau.swe.repository.RoleRepository;
-import com.sau.swe.repository.UsersRepository;
 import com.sau.swe.security.JwtService;
+import com.sau.swe.security.UserImpl;
 import com.sau.swe.service.Abstract.AuthenticationService;
 
 import com.sau.swe.utils.Constants;
@@ -26,29 +24,48 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UsersRepository usersRepository;;
+    private final UserRepository usersRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
     private final RestTemplate template;
     private final PasswordEncoder passwordEncoder;
+    
+    private UserImpl convertToUserImpl(Users user) {
+        UserImpl userImpl = new UserImpl();
+        userImpl.setId(user.getId());
+        userImpl.setUsername(user.getUsername());
+        userImpl.setPassword(user.getPassword());
+        userImpl.setEmail(user.getEmail());
+        userImpl.setFirstName(user.getFirstName());
+        userImpl.setLastName(user.getLastName());
+        userImpl.setStatus(user.getStatus());
+        userImpl.setCreatedAt(user.getCreatedAt());
+        userImpl.setUpdatedAt(user.getUpdatedAt());
+        userImpl.setAccounts(user.getAccounts());
+        userImpl.setRoles(user.getRoles());
+        return userImpl;
+    }
 
     @Override
+    @Transactional
     public TokenResponse login(LoginDto loginDto) {
         try {
             Users user = usersRepository.findByUsername(loginDto.getUsername())
                     .orElseThrow(()-> new NullPointerException(String.format("username not found : %s",loginDto.getUsername())));
+            UserImpl userImpl = convertToUserImpl(user);
             authenticationManager.authenticate
                     (new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword()));
 
-            String token = jwtService.generateToken(user);
+            user.setLastLogin(LocalDateTime.now());
+            usersRepository.save(user);
+            String token = jwtService.generateToken(userImpl);
             return TokenResponse.builder().token(token).build();
         }
         catch (AuthenticationException e){
@@ -85,5 +102,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Failed to request to the URL: " + url);
             throw new GenericFinanceException(e.getMessage());
         }
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(PasswordChangeRequest request) {
+        Users user = usersRepository.findById(request.userId).orElseThrow(
+                ()-> new GenericFinanceException("generic.auth.userNotFound"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new GenericFinanceException("user.profile.incorrectPassword");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        usersRepository.save(user);
     }
 }

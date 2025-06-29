@@ -1,7 +1,7 @@
 package com.sau.swe.config;
 
-import com.sau.swe.repository.UsersRepository;
-
+import com.sau.swe.dao.UserRepository;
+import com.sau.swe.security.UserImpl;
 import com.sau.swe.utils.exception.GenericFinanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -13,16 +13,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    private final UsersRepository usersRepository;
+    private final UserRepository usersRepository;
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -37,8 +32,25 @@ public class AppConfig {
     }
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> usersRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericFinanceException("generic.auth.userNotFound"));
+        return username -> {
+            var user = usersRepository.findByUsername(username)
+                    .orElseThrow(() -> new GenericFinanceException("generic.auth.userNotFound"));
+
+            UserImpl userImpl = new UserImpl();
+            userImpl.setId(user.getId());
+            userImpl.setUsername(user.getUsername());
+            userImpl.setPassword(user.getPassword());
+            userImpl.setEmail(user.getEmail());
+            userImpl.setFirstName(user.getFirstName());
+            userImpl.setLastName(user.getLastName());
+            userImpl.setStatus(user.getStatus());
+            userImpl.setCreatedAt(user.getCreatedAt());
+            userImpl.setUpdatedAt(user.getUpdatedAt());
+            userImpl.setAccounts(user.getAccounts());
+            userImpl.setRoles(user.getRoles());
+            
+            return userImpl;
+        };
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

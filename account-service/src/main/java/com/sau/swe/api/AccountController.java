@@ -31,8 +31,8 @@ public class AccountController {
         return GenericResponse.success("generic.account.balance");
     }
     @GetMapping("/get-account/{username}")
-    public GenericResponse<AccountResponse> getAccountByUsername(@PathVariable("username") String username){
-        AccountResponse accountResponse=accountService.getAccountByUsername(username);
+    public GenericResponse<List<AccountResponse>> getAccountByUsername(@PathVariable("username") String username){
+        List<AccountResponse> accountResponse = accountService.getAccountByUsername(username);
         return GenericResponse.success(accountResponse);
     }
 
