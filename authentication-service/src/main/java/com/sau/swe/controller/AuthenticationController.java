@@ -1,9 +1,6 @@
 package com.sau.swe.controller;
 
-import com.sau.swe.dto.LoginDto;
-import com.sau.swe.dto.PasswordChangeRequest;
-import com.sau.swe.dto.SignUpDto;
-import com.sau.swe.dto.TokenResponse;
+import com.sau.swe.dto.*;
 import com.sau.swe.service.Abstract.AuthenticationService;
 import com.sau.swe.utils.response.GenericResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +29,16 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public GenericResponse<TokenResponse> login(@RequestBody LoginDto loginDto){
-        TokenResponse tokenResponse = authenticationService.login(loginDto);
-        return GenericResponse.success(tokenResponse);
+    public GenericResponse<TwoFactorLoginResponse> login(@RequestBody LoginDto loginDto){
+        TwoFactorLoginResponse response = authenticationService.login(loginDto);
+        return GenericResponse.success(response);
 
+    }
+
+    @PostMapping("/verify-2fa")
+    public GenericResponse<TokenResponse> verifyTwoFactorCode(@RequestBody TwoFactorLoginRequest request){
+        TokenResponse tokenResponse = authenticationService.verifyTwoFactorCode(request);
+        return GenericResponse.success(tokenResponse);
     }
 
     @PostMapping("/change-password")
@@ -43,5 +46,12 @@ public class AuthenticationController {
         authenticationService.changePassword(request);
         return GenericResponse.success("user.profile.password.changed");
 
+    }
+
+    @PostMapping("/enable-2fa")
+    public GenericResponse<String> enable2FA(@RequestBody Enable2FARequest request){
+        authenticationService.enable2FA(request);
+        String message = request.getEnable2FA() ? "auth.2fa.enabled" : "auth.2fa.disabled";
+        return GenericResponse.success(message);
     }
 }
