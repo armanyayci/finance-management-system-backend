@@ -21,6 +21,7 @@ public class Constants {
     public static final Integer USER_RUN_PORT = 8084;
     public static final Integer DISCOVERY_SERVER_RUN_PORT = 8085;
     public static final Integer API_GATEWAY_RUN_PORT = 8086;
+    public static final Integer NOTIFICATION_RUN_PORT = 9090;
 
 
 }
