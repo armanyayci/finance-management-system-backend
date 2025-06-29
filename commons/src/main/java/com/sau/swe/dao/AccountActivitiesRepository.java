@@ -1,6 +1,7 @@
 package com.sau.swe.dao;
 
 import com.sau.swe.dto.TransactionDTO;
+import com.sau.swe.entity.Account;
 import com.sau.swe.entity.AccountActivities;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +20,11 @@ public interface AccountActivitiesRepository extends JpaRepository<AccountActivi
             "inner join aa.transaction t " +
             "inner join aa.account acc " +
             "inner join acc.userId user " +
-            "where user.username =:username and t.transactionTime >= :startDate " +
+            "where user.username =:username and acc.accountType =:accountType and t.transactionTime >= :startDate " +
             "order by t.transactionTime desc")
-    List<TransactionDTO> getTransactionListByAccountId(@Param("username") String username, @Param("startDate") LocalDateTime startDate);
+    List<TransactionDTO> getTransactionListByAccountId(@Param("username") String username,
+                                                       @Param("accountType")Account.AccountType accountType,
+                                                       @Param("startDate") LocalDateTime startDate);
 
 
     @Query(value = "select new com.sau.swe.dto.TransactionDTO(" +
