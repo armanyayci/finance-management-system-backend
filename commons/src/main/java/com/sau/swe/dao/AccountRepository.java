@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     boolean existsByTransferCode(String transferCode);
     Optional<Account> findByTransferCode(String transferCode);
-    Optional<Account> findByUserId_Id(Long userId);
+    List<Account> findByUserId_Id(Long userId);
 
     @Query(value = "select new com.sau.swe.dto.AccountResponse(a.balance, CAST(a.accountType AS integer), a.transferCode )" +
             " FROM Account a" +
