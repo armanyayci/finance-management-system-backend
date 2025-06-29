@@ -16,4 +16,5 @@ public class TransferRequest {
     private String code;
     private BigDecimal money;
     private String description;
+    private String accountType;
 }
