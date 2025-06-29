@@ -55,13 +55,19 @@ public class Users {
     @Lob
     private byte[] image;
 
+    @Column(name = "two_factor_enabled")
+    private Boolean twoFactorEnabled = false;
+
     @OneToMany(mappedBy = "userId")
+    @JsonIgnore
     private Set<Account> accounts;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<FinancialGoals> goals;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Expense> expenses;
 
     @ManyToMany(cascade = CascadeType.ALL

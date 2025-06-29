@@ -11,7 +11,8 @@ CREATE TABLE USERS (
                        last_login datetime,
                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                        updated_at datetime DEFAULT GETDATE(),
-                       image varbinary(max) null
+                       image varbinary(max) null,
+                       two_factor_enabled BIT DEFAULT 0
 );
 
 CREATE TABLE ROLES (
@@ -117,8 +118,19 @@ CREATE SEQUENCE expense_sequence START WITH 54802 INCREMENT BY 1;
 create table ACCOUNT_CURRENCY(
                          id BIGINT primary key,
                          currency_name varchar(50),
-                         amount (15, 2),
+                         amount decimal(15, 2),
                          account_id BIGINT,
                          type varchar(20),
                          FOREIGN KEY (account_id) references ACCOUNT(id) ON DELETE CASCADE
+);
+
+CREATE TABLE VERIFICATION_CODES (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    user_id BIGINT NOT NULL,
+    code VARCHAR(10) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE() NOT NULL,
+    expires_at DATETIME NOT NULL,
+    is_used BIT DEFAULT 0 NOT NULL,
+    verification_type VARCHAR(20) CHECK (verification_type IN ('TWO_FACTOR_AUTH', 'PASSWORD_RESET', 'EMAIL_VERIFICATION')) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
 );
