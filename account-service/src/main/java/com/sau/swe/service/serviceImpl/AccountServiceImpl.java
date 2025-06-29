@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -65,8 +66,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void moneyTransfer(TransferRequest request) {
-        Account senderAccount = accountRepository.findByUserId_Id(request.getSenderId())
-                .orElseThrow(() -> new GenericFinanceException("account.sender.notfound"));
+        Account.AccountType accountType = Account.AccountType.valueOf(request.getAccountType());
+        List<Account> accountList = accountRepository.findByUserId_Id(request.getSenderId());
+        if (accountList.isEmpty()) {
+            throw new GenericFinanceException("account.notfound");
+        }
+        Optional<Account> senderAccountOpt = accountList.stream()
+                .filter(account -> account.getAccountType().equals(accountType))
+                .findFirst();
+
+        Account senderAccount = senderAccountOpt.orElseThrow(() -> new GenericFinanceException("account.accountType.notfound"));
 
         if (senderAccount.getBalance().compareTo(request.getMoney()) < 0){
             throw new GenericFinanceException("account.insufficient.funds");
