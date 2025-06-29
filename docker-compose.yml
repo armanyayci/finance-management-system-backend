@@ -10,27 +10,12 @@ services:
     networks:
       - common
 
-  config-service:
-    build: ./config-service
-    image: config-service
-    container_name: config-service
-    depends_on:
-      - discovery-server
-    ports:
-      - "8888:8888"
-    environment:
-      - SPRING_PROFILES_ACTIVE=default
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
-    networks:
-      - common
-
   api-gateway:
     build: ./api-gateway
     image: api-gateway
     container_name: api-gateway
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8086:8086"
     environment:
@@ -47,17 +32,16 @@ services:
     container_name: authentication-service
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8080:8080"
     environment:
-      - SPRING_APPLICATION_NAME=authentication-service       # 👈 Config Server hangi dosyayı vereceğini buradan bilir
-      - SPRING_PROFILES_ACTIVE=default                       # 👈 profile'ı belirle
+      - SPRING_APPLICATION_NAME=authentication-service
+      - SPRING_PROFILES_ACTIVE=default
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
-      - CONFIG_SERVER_URL=http://config-service:8888        # 👈 config-server adresi
-      - spring.config.import=optional:configserver:http://config-service:8888 # 👈 yeni Spring sürümlerinde gerekebilir
+      - CONFIG_SERVER_URL=http://config-service:8888
+      - spring.config.import=optional:configserver:http://config-service:8888
 
-      # Database Configs (ister burada ister config-server'da olsun)
+
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
       - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
       - finance.mssql.db.username=armanyay_root
@@ -85,40 +69,10 @@ services:
     container_name: account-service
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8081:8081"
     environment:
       - SPRING_APPLICATION_NAME=account-service
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
-      - CONFIG_SERVER_URL=http://config-service:8888
-      - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
-      - finance.mssql.db.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
-      - finance.mssql.db.username=armanyay_root
-      - finance.mssql.db.password=14ap_0L8q
-      - finance.mssql.db.databaseName=armanyay_financemgmt
-      - finance.mssql.db.trustSertificate=true
-      - finance.db.hikari.maxPoolSize=10
-      - finance.db.hikari.minIdle=5
-      - finance.db.hikari.idleTimeOut=30000
-      - finance.db.hikari.connTimeout=20000
-      - finance.db.hikari.maxLifeTime=180000
-      - jwt.secret=9h5v8/AbGt3jPq4vM1uJlP6oE1lzkMZ+G9QcKlZq2g8=
-      - jwt.expiration=86400
-    networks:
-      - common
-
-  report-service:
-    build: ./report-service
-    image: report-service
-    container_name: report-service
-    depends_on:
-      - discovery-server
-      - config-service
-    ports:
-      - "8082:8082"
-    environment:
-      - SPRING_APPLICATION_NAME=report-service
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka
       - CONFIG_SERVER_URL=http://config-service:8888
       - finance.mssql.db.jdbc=jdbc:sqlserver://104.247.162.242:55548
@@ -143,7 +97,6 @@ services:
     container_name: currency-exchange-service
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8083:8083"
     environment:
@@ -172,7 +125,6 @@ services:
     container_name: user-service
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8084:8084"
     environment:
@@ -201,7 +153,6 @@ services:
     container_name: notification-service
     depends_on:
       - discovery-server
-      - config-service
     ports:
       - "8085:8085"
     environment:
@@ -235,7 +186,6 @@ services:
     depends_on:
       - authentication-service
       - user-service
-      - report-service
       - notification-service
       - account-service
       - currency-exchange-service
