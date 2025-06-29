@@ -65,7 +65,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         AccountActivities accountActivities = AccountActivities.builder()
                 .isIncome(false)
                 .account(account)
-                .description(String.format("CURRENCY EXCHANGE ORDER. Bought %s at rate %.2f for amount %.2f %s , Total Price: %s",
+                .description(String.format("CURRENCY EXCHANGE ORDER. Bought %s at rate %.2f for amount %.2f, Total Price: %s %s",
                         conversionRequest.getToCurrency(), conversionRequest.getConversionRate(), conversionRequest.getAmount(), totalExchange, conversionRequest.getFromCurrency()) )
                 .transaction(transaction)
                 .build();
@@ -142,7 +142,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         AccountActivities accountActivities = AccountActivities.builder()
                 .isIncome(true)
                 .account(account)
-                .description(String.format("CURRENCY EXCHANGE ORDER. Sold %s at rate %.2f for amount %.2f %s, Total Price: %s",
+                .description(String.format("CURRENCY EXCHANGE ORDER. Sold %s at rate %.2f for amount %.2f, Total Price: %s %s",
                         conversionRequest.getFromCurrency(), conversionRequest.getConversionRate(), conversionRequest.getAmount(), totalExchange, conversionRequest.getToCurrency()) )
                 .transaction(transaction)
                 .build();
