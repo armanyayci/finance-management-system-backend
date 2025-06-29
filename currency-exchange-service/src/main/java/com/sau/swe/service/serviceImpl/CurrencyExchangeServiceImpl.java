@@ -41,7 +41,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         log.info("Buy currency conversion started. UserId: {}", conversionRequest.getUserId());
 
         BigDecimal totalExchange = conversionRequest.getAmount().multiply(conversionRequest.getConversionRate());
-        Optional<Account> accountOpt = accountRepository.getAccountByUserId(conversionRequest.getUserId());
+        Optional<Account> accountOpt = accountRepository.getAccountByUserId(conversionRequest.getUserId(), Account.AccountType.TRY);
         if (accountOpt.isEmpty()) {
             throw new GenericFinanceException("account.notfound");
         }
@@ -113,7 +113,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
 
         Optional<AccountCurrency> accountCurrencyOpt = accountCurrencyRepository.getAccountCurrencyWithUserIdAndCurrencyName(
                 conversionRequest.getFromCurrency(),conversionRequest.getUserId());
-        Optional<Account> accountOpt = accountRepository.getAccountByUserId(conversionRequest.getUserId());
+        Optional<Account> accountOpt = accountRepository.getAccountByUserId(conversionRequest.getUserId(),Account.AccountType.TRY);
 
         if (accountCurrencyOpt.isEmpty()){
             throw new GenericFinanceException("currency.accountcurrency.notfound");

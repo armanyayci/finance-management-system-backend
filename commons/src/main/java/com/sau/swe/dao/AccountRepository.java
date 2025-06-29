@@ -26,6 +26,6 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Query("select t from Account t " +
             "inner join Users u on u.id = t.userId.id " +
-            "where u.id =:userId ")
-    Optional<Account> getAccountByUserId(@Param("userId") Long userId);
+            "where u.id =:userId and t.accountType =:accountType")
+    Optional<Account> getAccountByUserId(@Param("userId") Long userId, @Param("accountType") Account.AccountType accountType);
 }

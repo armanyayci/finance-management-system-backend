@@ -49,7 +49,8 @@ public class AccountServiceImpl implements AccountService {
         List<AccountResponse> accountResponseList = accountRepository.getAccountInfo(username);
         for (AccountResponse response : accountResponseList ) {
             LocalDateTime startDate = LocalDateTime.now().minusDays(3);
-            List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,startDate);
+            Account.AccountType accountType = Account.AccountType.valueOf(response.getAccountType());
+            List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,accountType,startDate);
             response.setLastTransactions(accountTransactions);
         }
 
