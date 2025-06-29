@@ -63,7 +63,7 @@
                             <rules>
                                 <requireFilesExist>
                                     <files>
-                                        <file>../config-service/properties</file>
+                                        <file>../commons/src/main/resources/application.properties</file>
                                     </files>
                                 </requireFilesExist>
                             </rules>

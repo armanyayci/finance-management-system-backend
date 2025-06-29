@@ -1,13 +1,10 @@
 package com.sau.swe.service.serviceImpl;
 
+import com.sau.swe.dao.*;
 import com.sau.swe.dto.*;
 import com.sau.swe.entity.Account;
 import com.sau.swe.entity.AccountActivities;
 import com.sau.swe.entity.Transaction;
-import com.sau.swe.repository.AccountActivitiesRepository;
-import com.sau.swe.repository.AccountRepository;
-import com.sau.swe.repository.TransactionRepository;
-import com.sau.swe.repository.UserRepository;
 import com.sau.swe.service.AccountService;
 import com.sau.swe.utils.Constants;
 import com.sau.swe.utils.exception.GenericFinanceException;
@@ -16,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -44,17 +40,21 @@ public class AccountServiceImpl implements AccountService {
     public void addBalance(BalanceRequest balanceRequest) {
         Account account=accountRepository.findById(balanceRequest.getAccountId())
                 .orElseThrow(() -> new GenericFinanceException("account.notfound"));
-        account.setBalance((long) (account.getBalance()+balanceRequest.getAmount()));
+        account.setBalance(account.getBalance().add(balanceRequest.getAmount()));
         accountRepository.save(account);
     }
 
     @Override
-    public AccountResponse getAccountByUsername(String username) {
-        AccountResponse accountResponse = accountRepository.getAccountInfo(username);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(3);
-        List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,startDate);
-        accountResponse.setLastTransactions(accountTransactions);
-        return accountResponse;
+    public List<AccountResponse> getAccountByUsername(String username) {
+        List<AccountResponse> accountResponseList = accountRepository.getAccountInfo(username);
+        for (AccountResponse response : accountResponseList ) {
+            LocalDateTime startDate = LocalDateTime.now().minusDays(3);
+            Account.AccountType accountType = Account.AccountType.valueOf(response.getAccountType());
+            List<TransactionDTO> accountTransactions = accountActivitiesRepository.getTransactionListByAccountId(username,accountType,startDate);
+            response.setLastTransactions(accountTransactions);
+        }
+
+        return accountResponseList;
     }
 
     @Override
@@ -68,15 +68,15 @@ public class AccountServiceImpl implements AccountService {
         Account senderAccount = accountRepository.findByUserId_Id(request.getSenderId())
                 .orElseThrow(() -> new GenericFinanceException("account.sender.notfound"));
 
-        if (senderAccount.getBalance()<request.getMoney()){
+        if (senderAccount.getBalance().compareTo(request.getMoney()) < 0){
             throw new GenericFinanceException("account.insufficient.funds");
         }
         Account recipientAccount =
                 accountRepository.findByTransferCode(request.getCode())
                         .orElseThrow(() -> new GenericFinanceException("account.transfercode.notfound"));
 
-        senderAccount.setBalance(senderAccount.getBalance()-request.getMoney());
-        recipientAccount.setBalance(recipientAccount.getBalance()+request.getMoney());
+        senderAccount.setBalance(senderAccount.getBalance().subtract(request.getMoney()));
+        recipientAccount.setBalance(recipientAccount.getBalance().add(request.getMoney()));
 
         accountRepository.save(senderAccount);
         accountRepository.save(recipientAccount);

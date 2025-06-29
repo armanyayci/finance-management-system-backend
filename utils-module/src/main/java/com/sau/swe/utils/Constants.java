@@ -1,10 +1,12 @@
 package com.sau.swe.utils;
 
 
+import java.math.BigDecimal;
+
 public class Constants {
 
     // ACCOUNT BALANCE FOR INITIAL CREATE
-    public static final Long INITIAL_BALANCE = 0L;
+    public static final BigDecimal INITIAL_BALANCE = BigDecimal.ZERO;
 
     // CHARSET TO CREATE CUSTOM UNIQUE TRANSFER_CODE
     public static final String TRANSFER_CODE_CHARSET = "ABCDEFGHIJKLMNOPRSTUVYZXQ01234567989";
