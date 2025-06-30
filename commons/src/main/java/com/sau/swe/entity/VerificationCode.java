@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "VERIFICATION_CODES")
+@Table(name = "verification_codes")
 @Builder
 public class VerificationCode {
     @Id

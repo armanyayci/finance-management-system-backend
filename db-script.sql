@@ -124,13 +124,13 @@ create table ACCOUNT_CURRENCY(
                          FOREIGN KEY (account_id) references ACCOUNT(id) ON DELETE CASCADE
 );
 
-CREATE TABLE VERIFICATION_CODES (
-                                    id BIGINT PRIMARY KEY,
+CREATE TABLE verification_codes (
+                                    id BIGINT PRIMARY KEY IDENTITY(1,1),
                                     user_id BIGINT,
                                     code VARCHAR(10),
                                     created_at DATETIME DEFAULT GETDATE(),
                                     expires_at DATETIME,
                                     is_used BIT DEFAULT 0,
                                     verification_type VARCHAR(20) CHECK (verification_type IN ('TWO_FACTOR_AUTH', 'PASSWORD_RESET', 'EMAIL_VERIFICATION')),
-                                    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
+                                    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
