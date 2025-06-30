@@ -23,8 +23,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final UserRepository userRepository;
     @Override
     @Transactional
-    public void addExpense(Long userId, ExpenseDTO expense) {
-        Users user = userRepository.findById(userId).orElseThrow(
+    public void addExpense(String username, ExpenseDTO expense) {
+        Users user = userRepository.findByUsername(username).orElseThrow(
                 () -> new GenericFinanceException("generic.auth.userNotFound")
         );
 
@@ -38,12 +38,12 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .isPaid(expense.getIsPaid())
                 .user(user)
                 .build());
-        log.info("User expenses saved. UserId: " + userId);
+        log.info("User expenses saved. UserId: " + username);
     }
 
     @Override
-    public List<ExpenseDTO> getExpenses(Long userId) {
-        return expenseRepository.findAllByUserId(userId);
+    public List<ExpenseDTO> getExpenses(String username) {
+        return expenseRepository.findAllByUsername(username);
     }
 
     @Override

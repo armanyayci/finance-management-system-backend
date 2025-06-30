@@ -7,9 +7,9 @@ import java.util.List;
 
 @Service
 public interface ExpenseService {
-    void addExpense(Long userId, ExpenseDTO expenses);
+    void addExpense(String username, ExpenseDTO expenses);
 
-    List<ExpenseDTO> getExpenses(Long userId);
+    List<ExpenseDTO> getExpenses(String username);
 
     void deleteById(Long userId);
 

@@ -17,14 +17,14 @@ public class ExpensesController {
     private final ExpenseService expenseService;
 
     @GetMapping("/get-expenses")
-    public ResponseEntity<GenericResponse<List<ExpenseDTO>>> getExpense(@RequestParam(name = "userId") Long userId) {
-        return ResponseEntity.ok(GenericResponse.success(expenseService.getExpenses(userId)));
+    public ResponseEntity<GenericResponse<List<ExpenseDTO>>> getExpense(@RequestParam(name = "username") String username) {
+        return ResponseEntity.ok(GenericResponse.success(expenseService.getExpenses(username)));
     }
 
-    @PostMapping("/add-expense/{userId}")
-    public ResponseEntity<GenericResponse<Void>> addExpense(@PathVariable(name = "userId") Long userId,
+    @PostMapping("/add-expense/{username}")
+    public ResponseEntity<GenericResponse<Void>> addExpense(@PathVariable(name = "username") String username,
                                                              @RequestBody ExpenseDTO expense) {
-        expenseService.addExpense(userId, expense);
+        expenseService.addExpense(username, expense);
         return ResponseEntity.ok(GenericResponse.success("expense.add.success"));
     }
 

@@ -17,6 +17,6 @@ public interface ExpenseRepository extends JpaRepository<Expense,Long> {
             "e.id, e.name, e.description, e.amount, e.category, e.lastPaymentDate, e.isRecurring,e.isPaid) " +
             "from Expense e " +
             "inner join e.user u " +
-            "where u.id =:userId")
-    List<ExpenseDTO> findAllByUserId(@Param("userId") Long userId);
+            "where u.username =:username")
+    List<ExpenseDTO> findAllByUsername(@Param("username") String username);
 }
