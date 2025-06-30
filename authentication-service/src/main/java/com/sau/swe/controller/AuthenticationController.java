@@ -54,4 +54,10 @@ public class AuthenticationController {
         String message = request.getEnable2FA() ? "auth.2fa.enabled" : "auth.2fa.disabled";
         return GenericResponse.success(message);
     }
+
+    @PostMapping("/verifytoken")
+    public GenericResponse<TokenVerificationResponse> verifyToken(@RequestBody TokenVerificationRequest request){
+        TokenVerificationResponse response = authenticationService.verifyToken(request.getToken());
+        return GenericResponse.success(response);
+    }
 }

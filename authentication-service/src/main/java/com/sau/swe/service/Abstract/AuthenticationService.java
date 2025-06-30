@@ -13,4 +13,6 @@ public interface AuthenticationService {
     void changePassword(PasswordChangeRequest request);
 
     void enable2FA(Enable2FARequest request);
+
+    TokenVerificationResponse verifyToken(String token);
 }

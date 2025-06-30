@@ -220,4 +220,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         
         log.info("2FA {} for user: {}", request.getEnable2FA() ? "enabled" : "disabled", user.getUsername());
     }
+
+    @Override
+    public TokenVerificationResponse verifyToken(String token) {
+        try {
+            String username = jwtService.getUsernameFromToken(token);
+            Users user = usersRepository.findByUsername(username)
+                    .orElseThrow(() -> new GenericFinanceException("generic.auth.userNotFound"));
+            UserImpl userImpl = convertToUserImpl(user);
+            boolean isValid = jwtService.validateToken(token, userImpl);
+            if (isValid) {
+                return new TokenVerificationResponse(true, username, user.getId());
+            } else {
+                return new TokenVerificationResponse(false, null, null);
+            }
+        } catch (Exception e) {
+            log.warn("Token verification failed: {}", e.getMessage());
+            return new TokenVerificationResponse(false, null, null);
+        }
+    }
 }
