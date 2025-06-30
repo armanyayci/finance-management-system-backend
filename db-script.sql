@@ -125,12 +125,12 @@ create table ACCOUNT_CURRENCY(
 );
 
 CREATE TABLE VERIFICATION_CODES (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
-    user_id BIGINT NOT NULL,
-    code VARCHAR(10) NOT NULL,
-    created_at DATETIME DEFAULT GETDATE() NOT NULL,
-    expires_at DATETIME NOT NULL,
-    is_used BIT DEFAULT 0 NOT NULL,
-    verification_type VARCHAR(20) CHECK (verification_type IN ('TWO_FACTOR_AUTH', 'PASSWORD_RESET', 'EMAIL_VERIFICATION')) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
+                                    id BIGINT PRIMARY KEY,
+                                    user_id BIGINT,
+                                    code VARCHAR(10),
+                                    created_at DATETIME DEFAULT GETDATE(),
+                                    expires_at DATETIME,
+                                    is_used BIT DEFAULT 0,
+                                    verification_type VARCHAR(20) CHECK (verification_type IN ('TWO_FACTOR_AUTH', 'PASSWORD_RESET', 'EMAIL_VERIFICATION')),
+                                    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
 );

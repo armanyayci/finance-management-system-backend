@@ -19,22 +19,22 @@ public class VerificationCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code")
     private String code;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
-    @Column(name = "is_used", nullable = false)
+    @Column(name = "is_used")
     private Boolean isUsed = false;
 
-    @Column(name = "verification_type", nullable = false)
+    @Column(name = "verification_type")
     @Enumerated(EnumType.STRING)
     private VerificationType verificationType;
 
