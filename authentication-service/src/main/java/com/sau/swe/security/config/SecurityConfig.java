@@ -33,8 +33,8 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("OPTIONS", "/**").permitAll()
                                 .requestMatchers(
-                                        "/finance-mgmt/api/authenticate/**").permitAll()
-                                .requestMatchers("/finance-mgmt/api/**").authenticated()
+                                        "/api/authenticate/**").permitAll()
+                                .requestMatchers("/api/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(financeExceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)

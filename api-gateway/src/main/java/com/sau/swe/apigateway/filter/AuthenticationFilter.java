@@ -22,10 +22,10 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     private final WebClient webClient;
     
     private final List<String> publicPaths = Arrays.asList(
-        "/finance-mgmt/api/authenticate/login",
-        "/finance-mgmt/api/authenticate/signup",
-        "/finance-mgmt/api/authenticate/verify-2fa",
-        "/finance-mgmt/api/authenticate/verifytoken"
+        "/api/authenticate/login",
+        "/api/authenticate/signup",
+        "/api/authenticate/verify-2fa",
+        "/api/authenticate/verifytoken"
     );
 
     public AuthenticationFilter() {
@@ -82,7 +82,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         log.info("Sending token verification request to auth service");
         
         return webClient.post()
-            .uri("/finance-mgmt/api/authenticate/verifytoken")
+            .uri("/api/authenticate/verifytoken")
             .header("Content-Type", "application/json")
             .bodyValue(requestBody)
             .retrieve()
